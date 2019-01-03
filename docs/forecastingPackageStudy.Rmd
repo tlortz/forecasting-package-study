@@ -1,0 +1,18 @@
+---
+title: "Comparing Performance of Autofitting Time Series Models"
+output: html_notebook
+---
+
+In several recent client and personal projects, I've found a need to quickly create robust real-time anomaly detection for time series data. In the typical use case, the goal is to fit a model to as much historical data as possible that can then be used to predict future time series values. Then, the predictions are compared against the new observed data, and if the observed data appears to fall too far away from the predicted values, it is flagged for follow-on analysis. 
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).

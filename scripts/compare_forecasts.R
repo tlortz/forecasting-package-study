@@ -8,6 +8,7 @@ library(zoo)
 library(forecastHybrid)
 library(prophet)
 library(MLmetrics)
+library(xts)
 
 ############## HELPER FUNCTIONS ##############
 fn_convert_datetime_to_datehour = function(date_time) {
@@ -44,7 +45,8 @@ fn_generate_fcst_df = function(train_data,station_name,train_periods,test_period
   train = vecs[[1]]
   test = vecs[[2]]
   model_auto.arima = auto.arima(train)
-  pred_auto.arima = predict(model_auto.arima,test_periods)$pred %>% 
+  # pred_auto.arima = predict(model_auto.arima,test_periods)$pred %>% 
+  pred_auto.arima = forecast(model_auto.arima,test_periods)$fitted %>% 
     zoo(.,seq(end(train)+hours(1),end(train)+hours(test_periods),by="hour"))
   # train_fh = merge.zoo(train,zoo(,seq(start(train),end(train),by="hour")), all=TRUE) %>%
   #   na.approx(.)
