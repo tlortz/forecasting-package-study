@@ -74,8 +74,24 @@ gc()
 raw_seattleWeather <- 
   fread('data/city-of-seattle/seattle-road-weather-information-stations/road-weather-information-stations.csv',
         nrows = 1E7,header = TRUE, drop = c("StationLocation")) %>%
-  unique()
-
+  unique() %>%
+  mutate(DateTime=as_datetime(DateTime))
+###### can we fill in the missing timestamps for each station, based on a master set of timestamps? ######
+ggplot(raw_data, aes(DateTime,AirTemperature)) +
+  geom_line() +
+  facet_grid(StationName ~ .)
+# two of the stations are missing several months of observations, while another starts a month
+# or two later than all the rest. let's remove these from the data
+raw_data %>%
+  group_by(StationName) %>%
+  summarise(num_obs = n()) %>%
+  arrange(-num_obs)
+# it looks like these three stations are HarborAveUpperNorthBridge, AlaskanWayViaduct_KingSt 
+# and JoseRizalBridgeNorth
+raw_data = raw_data %>%
+  filter(!(StationName %in% c("HarborAveUpperNorthBridge",
+                              "AlaskanWayViaduct_KingSt",
+                              "JoseRizalBridgeNorth")))
 ###### prep data for modeling ######
 # make sure no non-numeric observations or nonsensical timestamps get passed in
 # compute average sensor readings for each StationName per hour (day?)
